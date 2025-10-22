@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ARG TE="git+https://github.com/NVIDIA/TransformerEngine.git@release_v2.8"
 RUN --mount=type=cache,target=/root/.cache/pip \
     unset PIP_CONSTRAINT && \
-    NVTE_CUDA_ARCHS="80;90;100" NVTE_BUILD_THREADS_PER_JOB=8 NVTE_FRAMEWORK=pytorch \
+    NVTE_CUDA_ARCHS="80;90;100" NVTE_BUILD_THREADS_PER_JOB=1 NVTE_FRAMEWORK=pytorch \
     pip install --no-cache-dir --no-build-isolation $TE
 
 
