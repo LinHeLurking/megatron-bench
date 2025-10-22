@@ -19,13 +19,16 @@ export SEQ_LEN=4096
 export MOE_GROUPED_GEMM=1
 export PP=1
 export VPP=1
-export TP=1
+export TP=2
 export EP=8
 export CP=1
 export MOE_TOKEN_DISPATCHER=alltoall
 
 export RUN_TIME=00:30:00
 export COMMENT=
+
+export CUDA_DEVICE_MAX_CONNECTIONS=1
+GPU=$(nvidia-smi -q | grep 'Product Name' | head -n 1 | sed -r 's#.*NVIDIA (.*)#\1#g')
 
 if [[ ! -d ${DATA_CACHE_PATH} ]]; then
     mkdir -p ${DATA_CACHE_PATH}
@@ -161,7 +164,7 @@ MEGATRON_ARGS=(
   --log-interval 1
   --tensorboard-dir ${OUTPUT_PATH}/tensorboard
   --wandb-project ${WANDB_PROJECT}
-  --wandb-exp-name Qwen3-30B-A3B-TP${TP}PP${PP}EP${EP}CP${CP}VPP${VPP}-MBS${MBS}GBS${GBS}-${COMMENT}
+  --wandb-exp-name ${GPU}-Qwen3-30B-A3B-TP${TP}PP${PP}EP${EP}CP${CP}VPP${VPP}-MBS${MBS}GBS${GBS}-${COMMENT}
 
   # Add mixed precision args
   --bf16 
