@@ -24,6 +24,7 @@ export EP=8
 export CP=1
 export MOE_TOKEN_DISPATCHER=flex
 export MOE_ENABLE_DEEPEP=1
+export FULL_RECOMPUTE=1
 
 export RUN_TIME=00:30:00
 export COMMENT=
@@ -170,6 +171,16 @@ MEGATRON_ARGS=(
   # Add mixed precision args
   --bf16 
 )
+
+# Full recompute
+if [[ "${FULL_RECOMPUTE}" == "1" ]]; then
+  COMMENT=${COMMENT}_full_recompute
+  MEGATRON_ARGS+=(
+    --recompute-granularity full
+    --recompute-method uniform 
+    --recompute-num-layers 1
+  )
+fi
 
 if [[ "${MOE_GROUPED_GEMM}" == "1" ]]; then
     MEGATRON_ARGS+=("--moe-grouped-gemm")
