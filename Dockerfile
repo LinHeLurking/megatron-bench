@@ -37,7 +37,7 @@ bash -ex <<"EOF"
         patch -p1 < /workspace/deepep.patch
     popd
     TORCH_CUDA_ARCH_LIST="9.0 10.0 12.0" pip install --no-build-isolation -v DeepEP/.
-    rm -rf DeepEP
+    rm -rf DeepEP /workspace/deepep.patch
 EOF
 
 #
@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ARG TE="git+https://github.com/NVIDIA/TransformerEngine.git@release_v2.8"
 RUN --mount=type=cache,target=/root/.cache/pip \
     unset PIP_CONSTRAINT && \
-    NVTE_CUDA_ARCHS="80;90;100" NVTE_BUILD_THREADS_PER_JOB=1 NVTE_FRAMEWORK=pytorch \
+    NVTE_CUDA_ARCHS="90;100;120" NVTE_BUILD_THREADS_PER_JOB=1 NVTE_FRAMEWORK=pytorch \
     pip install --no-cache-dir --no-build-isolation $TE
 
 
