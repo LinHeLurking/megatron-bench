@@ -13,8 +13,8 @@ export WANDB_BASE_URL=
 export WANDB_API_KEY=
 export WANDB_PROJECT=
 export PROFILE=0 # whether to profile the model with nsys profile
-export GBS=256
-export MBS=1
+export GBS=512
+export MBS=32
 export SEQ_LEN=4096
 export MOE_GROUPED_GEMM=1
 export PP=1
@@ -196,7 +196,8 @@ fi
 
 if [[ "$DRY_RUN" == "1" ]]; then
     echo ${PROFILE_CMD} torchrun \
-        --nnodes=${WORLD_SIZE:-1} \
+        --nnodes ${WORLD_SIZE:-1} \
+        --node_rank ${RANK:-0} \
         --nproc_per_node ${NGPU:-8} \
         --master_addr ${MASTER_ADDR:-"127.0.0.1"} \
         --master_port ${MASTER_PORT:-12345} \
@@ -204,7 +205,8 @@ if [[ "$DRY_RUN" == "1" ]]; then
         ${MEGATRON_ARGS[@]}
 else
     ${PROFILE_CMD} torchrun \
-        --nnodes=${WORLD_SIZE:-1} \
+        --nnodes ${WORLD_SIZE:-1} \
+        --node_rank ${RANK:-0} \
         --nproc_per_node ${NGPU:-8} \
         --master_addr ${MASTER_ADDR:-"127.0.0.1"} \
         --master_port ${MASTER_PORT:-12345} \
